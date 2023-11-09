@@ -35,7 +35,7 @@ def create_page():
         db.session.commit()
         return redirect(url_for('admin'))
     return render_template('create_page.html')
-#comment to check the git 
+#comment to check the git aa 
 
 if __name__ == '__main__':
     with app.app_context():
