@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shopping Cart</title>
+</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <div class="container" >
+<body>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1 class="p-3 mb-2 bg-dark text-white fixed-top" style="right: 20px;">
+                    
+                    Your Shopping Cart</h1>
+            </div>
+        </div>
+    </div>
+    
+    <ul style="position: relative; top:100px">
+        {% for item in cart %}
+            <li>
+                <strong>{{ item.name }}</strong><br>
+                <img src="{{ url_for('static', filename='images/'~ item.product +'.jpg' ) }}" alt="{{item.name}}" width="150">
+                Price: ${{ item.price }}<br>
+            </li>
+        {% endfor %}
+    </ul>
+    <div style="position: relative; top:100px">
+        <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Continue Shopping</a>
+    </div>
+</body>
+</html>
