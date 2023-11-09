@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Real time vote</title>
+</head>
+<body>
+    <h1>Real time Polling App</h1>
+    <ul>
+        {% for poll in poll_data %}
+            <li>
+                <h3>{{ poll["question"] }}</h3>
+                <ul>
+                    {% for option, count in poll['options'] %}
+                        <li>
+                            <span id='{{poll["parent_index"]}}{{loop.index0}}'>{{ option }} - {{ count }} votes</span>
+                            <button onclick="vote({{ poll["parent_index"] }} , {{loop.index0}}, '{{ option }}')">Vote</button>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
+    <script>
+        var socket = io.connect('http://'+ document.domain + ':' + location.port);
+
+        function vote(parent_index, poll_id, option){
+            socket.emit('submit_vote', {'parent_idx':parent_index, 'poll_id': poll_id, 'option':option});
+
+        }
+
+        socket.on('update_results', function(data){
+            var parent_idx = data.parent_idx;
+            var poll_id = data.poll_id;
+            var updatedOption = data.option;
+            var idx = parent_idx.toString()+poll_id.toString();
+            var pollOptions = document.getElementById(idx)
+            var option = pollOptions.textContent.split('-')[0]
+            if(option.trim() === updatedOption) {
+                var count = parseInt(pollOptions.textContent.split('-')[1]);
+                count += 1
+                pollOptions.outerHTML = '<span id=' + idx + '>' + updatedOption + ' - ' + count + ' votes </span>';
+            }
+        });
+    </script>
+</body>
+</html>

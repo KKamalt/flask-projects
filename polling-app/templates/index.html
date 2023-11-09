@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Real-Time Polling App</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa; /* Light gray background */
+            color: #343a40; /* Dark gray text color */
+            margin: 20px;
+        }
+
+        h1 {
+            color: #007bff; /* Blue header text color */
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 20px 0;
+            border: 1px solid #dee2e6; /* Light border color */
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #fff; /* White background color */
+        }
+
+        h3 {
+            color: #495057; /* Dark gray header text color */
+        }
+
+        span {
+            font-weight: bold;
+        }
+
+        button {
+            background-color: #28a745; /* Green button background color */
+            color: #fff; /* White button text color */
+            border: none;
+            padding: 5px 10px;
+            margin-left: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Real-Time Polling App</h1>
+    <ul>
+        {% for poll in poll_data %}
+            <li>
+                <h3>{{ poll["question"] }}</h3>
+                <ul>
+                    {% for option, count in poll["options"] %}
+                        <li>
+                            <span id='{{poll["parent_index"]}}{{loop.index0}}'>{{ option }} - {{ count }} votes</span>
+                            <button onclick="vote({{ poll["parent_index"] }}, {{ loop.index0 }}, '{{ option }}')">Vote</button>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        function vote(parent_index, poll_id, option) {
+            socket.emit('submit_vote', {'parent_idx': parent_index, 'poll_id': poll_id, 'option': option});
+        }
+
+        socket.on('update_results', function(data) {
+            var parent_idx = data.parent_idx;
+            var poll_id = data.poll_id;
+            var updatedOption = data.option;
+            var idx = parent_idx.toString()+poll_id.toString();
+            var pollOptions = document.getElementById(idx);
+            var option = pollOptions.textContent.split(' - ')[0];
+            if (option.trim() === updatedOption) {
+                var count = parseInt(pollOptions.textContent.split(' - ')[1]);
+                count += 1;
+                pollOptions.outerHTML = '<span id=' +idx+ '>' + updatedOption + ' - ' + count + ' votes </span>';
+            }
+        });
+    </script>
+</body>
+</html>
