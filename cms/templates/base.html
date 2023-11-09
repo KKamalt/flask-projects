@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>My CMS</title>
+    <style>
+        header {
+            background: linear-gradient(to right, #003366, #66ccff); /* Gradient background */
+            color: #fff; /* Text color */
+            padding: 20px;
+        }
+
+        nav {
+            margin-top: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: linear-gradient(to right, #003366, #66ccff); /* Gradient background */
+            color: #fff; /* Text color */
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .nav-pills > li.active > a,
+        .nav-pills > li.active > a:hover,
+        .nav-pills > li.active > a:focus {
+            background-color: #003366; /* Active tab background color */
+            color: #fff; /* Active tab text color */
+        }
+
+        .jumbotron {
+            background: linear-gradient(to right, #003366, #66ccff); /* Gradient background */
+            color: #fff; /* Text color */
+            padding: 20px;
+            margin-bottom: 0; /* Remove default margin */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="jumbotron">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h1 class="p-3 mb-2 bg-dark text-white">My Content Management System</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <nav>
+            <ul class="nav nav-pills">
+                <li role="presentation" class="active"><a href="/">Home</a></li>
+                <li role="presentation"><a href="/admin">Admin</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer>
+        &copy; 2023 My CMS
+    </footer>
+</body>
+</html>

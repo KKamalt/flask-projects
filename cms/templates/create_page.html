@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2>Create New Page</h2>
+        <form method="post" class="col-md-8">
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label" for="title">Title:</label>
+                <div class="col-md-8">
+                    <input class="form-control" type="text" name="title" id="title" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label" for="content">Content:</label>
+                <div class="col-md-8">
+                    <textarea class="form-control" name="content" id="content" required></textarea>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-8">
+                    <input type="submit" class="btn btn-primary" value="Create Page">
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
